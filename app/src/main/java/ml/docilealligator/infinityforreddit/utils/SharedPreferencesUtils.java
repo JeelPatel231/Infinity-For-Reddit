@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 
 public class SharedPreferencesUtils {
     public static final String ENABLE_NOTIFICATION_KEY = "enable_notification";
+    public static final String CLIENT_ID_KEY = "client_id";
     public static final String NOTIFICATION_INTERVAL_KEY = "notificaiton_interval";
     public static final String LAZY_MODE_INTERVAL_KEY = "lazy_mode_interval";
     public static final String THEME_KEY = "theme";

@@ -60,7 +60,9 @@ class AppAuthLoginViewModel(
                     val api: RedditAPIKt = mRetrofit.create(RedditAPIKt::class.java)
 
                     try {
-                        val accessTokenResponse = api.getAccessToken(APIUtils.getHttpBasicAuthHeader(), params)
+                        val accessTokenResponse = api.getAccessToken(APIUtils.getHttpBasicAuthHeader(
+                            mCurrentAccountSharedPreferences.getString(SharedPreferencesUtils.CLIENT_ID_KEY, "")
+                        ), params)
                         val responseJSON = JSONObject(accessTokenResponse)
                         val accessToken = responseJSON.getString(APIUtils.ACCESS_TOKEN_KEY)
                         val refreshToken = responseJSON.getString(APIUtils.REFRESH_TOKEN_KEY)
