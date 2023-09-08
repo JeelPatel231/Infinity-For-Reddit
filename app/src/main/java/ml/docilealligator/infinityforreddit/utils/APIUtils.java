@@ -14,7 +14,8 @@ import okhttp3.RequestBody;
  */
 
 public class APIUtils {
-    public static final String OAUTH_URL = "https://www.reddit.com/api/v1/authorize.compact";
+//    public static final String OAUTH_URL = "https://www.reddit.com/api/v1/authorize.compact";
+    public static final String OAUTH_URL = "https://old.reddit.com/api/v1/authorize.compact";
     public static final String OAUTH_API_BASE_URI = "https://oauth.reddit.com";
     public static final String API_BASE_URI = "https://www.reddit.com";
     public static final String API_UPLOAD_MEDIA_URI = "https://reddit-uploaded-media.s3-accelerate.amazonaws.com";
@@ -23,12 +24,12 @@ public class APIUtils {
     public static final String IMGUR_API_BASE_URI = "https://api.imgur.com/3/";
     public static final String PUSHSHIFT_API_BASE_URI = "https://api.pushshift.io/";
     public static final String REVEDDIT_API_BASE_URI = "https://api.reveddit.com/";
+    public static final String STRAPI_BASE_URI = "https://strapi.reddit.com";
     public static final String STREAMABLE_API_BASE_URI = "https://api.streamable.com";
     public static final String ONLINE_CUSTOM_THEMES_API_BASE_URI = "http://127.0.0.1";
 
     public static final String CLIENT_ID_KEY = "client_id";
     public static final String CLIENT_SECRET_KEY = "client_secret";
-    public static final String CLIENT_ID = "NOe2iKrPPzwscA";
     public static final String IMGUR_CLIENT_ID = "Client-ID cc671794e0ab397";
     public static final String REDGIFS_CLIENT_ID = "1828d0bcc93-15ac-bde6-0005-d2ecbe8daab3";
     public static final String REDGIFS_CLIENT_SECRET = "TJBlw7jRXW65NAGgFBtgZHu97WlzRXHYybK81sZ9dLM=";
@@ -113,9 +114,14 @@ public class APIUtils {
     public static final String REFERER_KEY = "Referer";
     public static final String REVEDDIT_REFERER = "https://www.reveddit.com/";
 
-    public static Map<String, String> getHttpBasicAuthHeader() {
+    /*public static final String HOST_KEY = "Host";
+    public static final String REDGIFS_HOST = "api.redgifs.com";
+    public static final String CONTENT_TYPE_KEY = "Content-Type";
+    public static final String */
+
+    public static Map<String, String> getHttpBasicAuthHeader(String clientId) {
         Map<String, String> params = new HashMap<>();
-        String credentials = String.format("%s:%s", APIUtils.CLIENT_ID, "");
+        String credentials = String.format("%s:%s", clientId, "");
         String auth = "Basic " + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
         params.put(APIUtils.AUTHORIZATION_KEY, auth);
         return params;

@@ -8,6 +8,8 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.text.InputType;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -86,6 +88,13 @@ public class AdvancedPreferenceFragment extends CustomFontPreferenceFragmentComp
     @Inject
     Executor executor;
 
+    private EditText buildEditText(){
+        final EditText input = new EditText(requireContext());
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        return input;
+    }
+
     @Override
     public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
         setPreferencesFromResource(R.xml.advanced_preferences, rootKey);
@@ -103,6 +112,25 @@ public class AdvancedPreferenceFragment extends CustomFontPreferenceFragmentComp
         Preference resetAllSettingsPreference = findPreference(SharedPreferencesUtils.RESET_ALL_SETTINGS);
         Preference backupSettingsPreference = findPreference(SharedPreferencesUtils.BACKUP_SETTINGS);
         Preference restoreSettingsPreference = findPreference(SharedPreferencesUtils.RESTORE_SETTINGS);
+        Preference clientIdFromPreference = findPreference(SharedPreferencesUtils.CLIENT_ID_KEY);
+
+
+        if (clientIdFromPreference != null) {
+            clientIdFromPreference.setOnPreferenceClickListener(preference -> {
+                EditText input = buildEditText();
+                new MaterialAlertDialogBuilder(activity, R.style.MaterialAlertDialogTheme)
+                        .setTitle("Add Client ID")
+                        .setView(input)
+                        .setPositiveButton(R.string.yes, (dialogInterface, i) -> {
+                            mCurrentAccountSharedPreferences.edit().putString(SharedPreferencesUtils.CLIENT_ID_KEY, input.getText().toString()).apply();
+                            Toast.makeText(activity, "Client ID was set successfully", Toast.LENGTH_SHORT).show();
+                            EventBus.getDefault().post(new RecreateActivityEvent());
+                        })
+                        .setNegativeButton(R.string.no, null)
+                        .show();
+                return true;
+            });
+        }
 
         if (deleteSubredditsPreference != null) {
             deleteSubredditsPreference.setOnPreferenceClickListener(preference -> {
