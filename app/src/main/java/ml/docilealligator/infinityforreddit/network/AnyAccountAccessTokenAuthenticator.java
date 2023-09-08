@@ -78,7 +78,9 @@ public class AnyAccountAccessTokenAuthenticator implements Authenticator {
         params.put(APIUtils.GRANT_TYPE_KEY, APIUtils.GRANT_TYPE_REFRESH_TOKEN);
         params.put(APIUtils.REFRESH_TOKEN_KEY, refreshToken);
 
-        Call<String> accessTokenCall = api.getAccessToken(APIUtils.getHttpBasicAuthHeader(), params);
+        Call<String> accessTokenCall = api.getAccessToken(APIUtils.getHttpBasicAuthHeader(
+                mCurrentAccountSharedPreferences.getString(SharedPreferencesUtils.CLIENT_ID_KEY, "")
+        ), params);
         try {
             retrofit2.Response<String> response = accessTokenCall.execute();
             if (response.isSuccessful() && response.body() != null) {
